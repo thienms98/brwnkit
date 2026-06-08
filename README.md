@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BrownKit
 
-## Getting Started
+A collection of developer tools built to solve real-world frontend and web development problems.
 
-First, run the development server:
+BrownKit started from a simple idea:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> Instead of opening 10 different websites for small tasks, keep everything in one place.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The first goal is to provide a better experience for working with Tailwind CSS, including class conversion, CSS generation, and live previews. Over time, BrownKit will grow into a toolbox containing utilities that developers actually use every day.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Tailwind Tools
 
-## Learn More
+- Tailwind → CSS converter
+- CSS → Tailwind converter
+- Live preview playground
+- Responsive preview modes
+- Class formatter and sorter
+- Utility inspector
 
-To learn more about Next.js, take a look at the following resources:
+### Developer Utilities (Planned)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- JSON Formatter
+- JWT Decoder
+- UUID Generator
+- Timestamp Converter
+- Regex Playground
+- Base64 Encoder / Decoder
+- URL Encoder / Decoder
+- Hash Generator
+- QR Code Generator
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Philosophy
 
-## Deploy on Vercel
+BrownKit follows a few simple principles:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Solve real problems before adding new features
+- Keep tools fast and easy to use
+- No unnecessary setup
+- Focus on developer experience
+- Build for daily use, not for demos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Every tool should be able to provide value within seconds of opening it.
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- React
+
+Additional technologies may be introduced only when they provide clear value to the project.
+
+## Roadmap
+
+### Phase 1
+
+- [ ] Tailwind playground
+- [ ] Tailwind → CSS conversion
+- [ ] CSS → Tailwind conversion
+- [ ] Live preview renderer
+
+### Phase 2
+
+- [ ] JSON Formatter
+- [ ] JWT Decoder
+- [ ] Timestamp Converter
+- [ ] UUID Generator
+
+### Phase 3
+
+- [ ] Regex Playground
+- [ ] Base64 Tools
+- [ ] Hash Generator
+- [ ] QR Generator
+
+### Phase 4
+
+- [ ] Saved snippets
+- [ ] Shareable URLs
+- [ ] User preferences
+- [ ] Cloud sync
+
+## Why BrownKit?
+
+Most developer tools solve one problem well.
+
+BrownKit aims to become a single workspace for common frontend and web development tasks, starting with Tailwind CSS and expanding based on real developer needs.
+
+Built by Brown.
