@@ -10,12 +10,23 @@ const TailwindToCss = () => {
   const debounceTw = useDebounce(tw);
 
   useEffect(() => {
-    fetch("/api/tw-to-css", {
-      method: "POST",
-      body: JSON.stringify({
-        classNames: debounceTw
-      })
-    });
+    const run = async () => {
+      if (!debounceTw.trim()) {
+        setCss("");
+        return;
+      }
+
+      const response = await fetch("/api/tw-to-css", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ classNames: debounceTw })
+      });
+
+      const data = (await response.json()) as { css?: string };
+      setCss(data.css ?? "");
+    };
+
+    void run();
   }, [debounceTw]);
 
   return (
@@ -33,6 +44,8 @@ const TailwindToCss = () => {
         disabled
         onChange={(e) => setCss(e.target.value)}
       ></textarea>
+
+      <iframe></iframe>
     </div>
   );
 };
