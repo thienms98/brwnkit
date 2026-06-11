@@ -1,3 +1,5 @@
+"use client";
+
 import { LoginForm } from "@/components/login-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import Image from "next/image";
@@ -27,6 +29,8 @@ const LoginPage = () => {
           src="/placeholder.svg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          width={800}
+          height={1000}
         />
       </div>
     </div>

@@ -13,13 +13,13 @@ export function LoginForm({
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to login to your account
+          Enter your your account to login
         </p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Label htmlFor="email">Username</Label>
+          <Input id="username" type="username" placeholder="brwn" required />
         </div>
         <div className="grid gap-2">
           <div className="flex items-center">
