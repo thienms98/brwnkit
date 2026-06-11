@@ -1,91 +1,112 @@
 # BrownKit
 
-A collection of developer tools built to solve real-world frontend and web development problems.
+# MVP Roadmap
 
-BrownKit started from a simple idea:
+## Phase 1 - Foundation
 
-> Instead of opening 10 different websites for small tasks, keep everything in one place.
+### Authentication
 
-The first goal is to provide a better experience for working with Tailwind CSS, including class conversion, CSS generation, and live previews. Over time, BrownKit will grow into a toolbox containing utilities that developers actually use every day.
+- Login
+- Logout
 
-## Features
+### Product Management
 
-### Tailwind Tools
+- CRUD Product
+- Upload Thumbnail
+- Upload GLB Model
 
-- Tailwind → CSS converter
-- CSS → Tailwind converter
-- Live preview playground
-- Responsive preview modes
-- Class formatter and sorter
-- Utility inspector
+### Storage
 
-### Developer Utilities (Planned)
+- Local Storage hoặc S3-compatible storage
 
-- JSON Formatter
-- JWT Decoder
-- UUID Generator
-- Timestamp Converter
-- Regex Playground
-- Base64 Encoder / Decoder
-- URL Encoder / Decoder
-- Hash Generator
-- QR Code Generator
+### Database
 
-## Philosophy
+User
+Product
+ProductPart
+MaterialOption
+SavedConfig
 
-BrownKit follows a few simple principles:
+## Phase 2 - 3D Viewer
 
-- Solve real problems before adding new features
-- Keep tools fast and easy to use
-- No unnecessary setup
-- Focus on developer experience
-- Build for daily use, not for demos
+### ThreeJS Viewer
 
-Every tool should be able to provide value within seconds of opening it.
+- Load GLB
+- Orbit Controls
+- HDR Environment
 
-## Tech Stack
+### Camera
 
-- Next.js
-- TypeScript
-- Tailwind CSS
-- React
+- Rotate
+- Zoom
+- Reset Camera
 
-Additional technologies may be introduced only when they provide clear value to the project.
+### Performance
 
-## Roadmap
+- Lazy Loading
+- Suspense
+- Draco Compression
 
-### Phase 1
+## Phase 3 - Configurator
 
-- [ ] Tailwind playground
-- [ ] Tailwind → CSS conversion
-- [ ] CSS → Tailwind conversion
-- [ ] Live preview renderer
+### Mesh Detection
 
-### Phase 2
+Tự động đọc:
 
-- [ ] JSON Formatter
-- [ ] JWT Decoder
-- [ ] Timestamp Converter
-- [ ] UUID Generator
+Chair
+├─ Seat
+├─ Legs
+└─ Backrest
 
-### Phase 3
+### Dynamic Configuration
 
-- [ ] Regex Playground
-- [ ] Base64 Tools
-- [ ] Hash Generator
-- [ ] QR Generator
+Admin chọn:
 
-### Phase 4
+Seat -> Editable
+Legs -> Editable
+Backrest -> Editable
 
-- [ ] Saved snippets
-- [ ] Shareable URLs
-- [ ] User preferences
-- [ ] Cloud sync
+### Material Editor
 
-## Why BrownKit?
+Người dùng:
 
-Most developer tools solve one problem well.
+- Đổi màu
+- Đổi texture
+- Reset
 
-BrownKit aims to become a single workspace for common frontend and web development tasks, starting with Tailwind CSS and expanding based on real developer needs.
+## Phase 4 - Save & Share
 
-Built by Brown.
+### Save Configuration
+
+Ví dụ:
+
+`{
+  "Seat": "#ff0000",
+  "Legs": "#000000"
+}`
+
+### Share Link
+
+/configs/abc123
+
+### Load Shared Config
+
+Mở URL sẽ khôi phục cấu hình.
+
+## Phase 5 - Admin Dashboard
+
+### Product Analytics
+
+- Tổng lượt xem
+- Tổng cấu hình
+  ###Configuration History
+
+- Danh sách cấu hình đã lưu.
+
+### Product Library
+
+- Quản lý model.
+
+```
+
+```
