@@ -1,24 +1,30 @@
-import { getJwtTimeLeft } from "@/lib/utils";
-import { verify } from "jsonwebtoken";
-import { cookies } from "next/headers";
+"use client";
 
-const Header = async () => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  let username = "";
+import { Button } from "@/components/ui/button";
+import req from "@/lib/req";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-  if (accessToken) {
-    console.log(getJwtTimeLeft(accessToken, process.env.ACCESS_SECRET!));
+const Header = ({ username }: { username: string }) => {
+  const { push } = useRouter();
 
+  const logout = async () => {
     try {
-      const payload = verify(accessToken, process.env.ACCESS_SECRET!);
-      username = String(payload.sub || "");
+      await req.post("auth/logout");
+      push("/admin/login");
     } catch {
-      username = "";
+      toast.error("Something went wrong");
     }
-  }
+  };
 
-  return <div>{username}</div>;
+  return (
+    <div className="shadow-md">
+      <div className="flex justify-end items-center gap-5 p-3 container mx-auto">
+        <div className="">Hello, {username}</div>
+        <Button onClick={logout}>Logout</Button>
+      </div>
+    </div>
+  );
 };
 
 export default Header;

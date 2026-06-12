@@ -11,7 +11,8 @@ export async function proxy(req: NextRequest) {
   }
 
   if (!refreshToken) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    console.log("redirecting");
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
@@ -36,6 +37,6 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|login|register|forgot-password|reset-password|_next/static|_next/image|favicon.ico).*)"
+    "/((?!api|admin|login|register|forgot-password|reset-password|_next/static|_next/image|favicon.ico).*)"
   ]
 };

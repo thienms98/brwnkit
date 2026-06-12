@@ -8,12 +8,12 @@ import { toast } from "sonner";
 import { LoginForm } from "../_components/login-form";
 
 const LoginPage = () => {
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
 
   const handleSubmit = async (payload: Record<string, string | boolean>) => {
     try {
       await req.post("/auth/login", payload);
-      push("/");
+      push("/admin");
     } catch (err) {
       console.log(err);
       toast.error("Username or password is not correct!");
