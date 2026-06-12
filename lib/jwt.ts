@@ -64,5 +64,5 @@ export const verifyAndRotate = async (refreshToken: string) => {
     }
   });
 
-  return { accessToken, refreshToken: newRefreshToken };
+  return { accessToken, refreshToken: newRefreshToken, payload };
 };

@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
 
@@ -14,4 +15,22 @@ export function getCookiesTokens(req: NextRequest) {
     accessToken,
     refreshToken
   };
+}
+
+export function getJwtTimeLeft(token: string, secret: string) {
+  try {
+    const decodedToken = verify(token, secret) as JwtPayload;
+
+    if (!decodedToken.exp) {
+      return null;
+    }
+
+    const currentTime = Date.now() / 1000;
+    const timeLeftSeconds = decodedToken.exp - currentTime;
+
+    return timeLeftSeconds > 0 ? timeLeftSeconds : 0;
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return null;
+  }
 }

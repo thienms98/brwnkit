@@ -1,11 +1,11 @@
 "use client";
 
-import { LoginForm } from "@/components/login-form";
 import req from "@/lib/req";
 import { GalleryVerticalEnd } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { LoginForm } from "../_components/login-form";
 
 const LoginPage = () => {
   const { push } = useRouter();

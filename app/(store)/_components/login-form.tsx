@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { SubmitEventHandler, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function LoginForm({
   className,
