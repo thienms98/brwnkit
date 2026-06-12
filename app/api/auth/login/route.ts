@@ -1,4 +1,4 @@
-import { getTokens } from "@/lib/jwt";
+import { generateTokens } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 import { LoginPayload } from "@/types/auth";
 import { compare } from "bcryptjs";
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const verify = await compare(password, user.password);
     if (!verify) throw new Error("Password not correct");
 
-    const { accessToken, refreshToken } = getTokens(user);
+    const { accessToken, refreshToken } = generateTokens(user);
 
     const cookieStore = await cookies();
     cookieStore.set("accessToken", accessToken, {

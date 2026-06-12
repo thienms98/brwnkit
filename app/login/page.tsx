@@ -1,11 +1,24 @@
 "use client";
 
 import { LoginForm } from "@/components/login-form";
+import req from "@/lib/req";
 import { GalleryVerticalEnd } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const LoginPage = () => {
-  const onSubmit = () => {};
+  const { push } = useRouter();
+
+  const handleSubmit = async (payload: Record<string, string | boolean>) => {
+    try {
+      await req.post("/auth/login", payload);
+      push("/");
+    } catch (err) {
+      console.log(err);
+      toast.error("Username or password is not correct!");
+    }
+  };
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -20,7 +33,7 @@ const LoginPage = () => {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm onSubmit={onSubmit} />
+            <LoginForm handleSubmit={handleSubmit} />
           </div>
         </div>
       </div>

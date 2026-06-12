@@ -6,11 +6,11 @@ import { prisma } from "./prisma";
 const accessSecret = process.env.ACCESS_SECRET!;
 const refreshSecret = process.env.REFRESH_SECRET!;
 
-export const getTokens = (payload: Account) => {
+export const generateTokens = ({ username, role }: Account) => {
   const accessToken = sign(
     {
-      sub: payload.username,
-      role: payload.role
+      sub: username,
+      role: role
     },
     accessSecret,
     {
@@ -20,7 +20,7 @@ export const getTokens = (payload: Account) => {
 
   const refreshToken = sign(
     {
-      sub: payload.username,
+      sub: username,
       jti: v4()
     },
     refreshSecret,
@@ -52,7 +52,7 @@ export const verifyAndRotate = async (refreshToken: string) => {
     }
   });
 
-  const { accessToken, refreshToken: newRefreshToken } = getTokens(user);
+  const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
 
   await prisma.account.update({
     where: {

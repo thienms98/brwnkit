@@ -3,13 +3,40 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SubmitEventHandler, useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import Link from "next/link";
+import { Checkbox } from "./ui/checkbox";
 
 export function LoginForm({
   className,
+  handleSubmit,
   ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}: React.ComponentPropsWithoutRef<"form"> & {
+  handleSubmit: (payload: Record<string, string | boolean>) => void;
+}) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const handleFormSubmit: SubmitEventHandler = async (e) => {
+    e.preventDefault();
+
+    if (handleSubmit)
+      handleSubmit({
+        username,
+        password,
+        rememberMe
+      });
+  };
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+      onSubmit={handleFormSubmit}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -19,20 +46,49 @@ export function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Username</Label>
-          <Input id="username" type="username" placeholder="brwn" required />
+          <Input
+            id="username"
+            type="username"
+            placeholder="brwn"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
-        <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
+        <div className="grid gap-2 relative">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            className="pr-10"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            className="absolute right-0 bottom-0 py-2 px-3 cursor-pointer"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+          </button>
         </div>
+
+        <div className="flex items-center justify-between">
+          <Label>
+            <Checkbox
+              onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
+            />
+            Remember me
+          </Label>
+          <Link
+            href="#"
+            className="self-end ml-auto text-sm underline-offset-4 hover:underline"
+          >
+            Forgot your password?
+          </Link>
+        </div>
+
         <Button type="submit" className="w-full">
           Login
         </Button>
@@ -53,9 +109,9 @@ export function LoginForm({
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href="#" className="underline underline-offset-4">
+        <Link href="#" className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
     </form>
   );
