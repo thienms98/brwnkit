@@ -2,9 +2,7 @@ import { Account } from "@/generated/prisma/client";
 import { sign, verify } from "jsonwebtoken";
 import { v4 } from "uuid";
 import { prisma } from "./prisma";
-
-const accessSecret = process.env.ACCESS_SECRET!;
-const refreshSecret = process.env.REFRESH_SECRET!;
+import { accessSecret, refreshSecret } from "@/constants/keys";
 
 export const generateTokens = ({ username, role }: Account) => {
   const accessToken = sign(

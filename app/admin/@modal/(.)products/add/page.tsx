@@ -13,6 +13,10 @@ import { useRouter } from "next/navigation";
 const AdminProductAddModal = () => {
   const { back } = useRouter();
 
+  const onProductCreate = () => {
+    back();
+  };
+
   return (
     <Dialog open onOpenChange={back}>
       <DialogContent>
@@ -20,7 +24,7 @@ const AdminProductAddModal = () => {
           <DialogTitle>Create product</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <ProductCreate />
+        <ProductCreate onProductCreate={onProductCreate} />
       </DialogContent>
     </Dialog>
   );

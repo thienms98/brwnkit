@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getCookiesTokens } from "@/lib/utils";
+import { getCookiesTokens } from "@/lib/auth";
 import { verify } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 

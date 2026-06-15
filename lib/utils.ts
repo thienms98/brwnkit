@@ -1,20 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
-}
-
-export function getCookiesTokens(req: NextRequest) {
-  const accessToken = req.cookies.get("accessToken")?.value;
-  const refreshToken = req.cookies.get("refreshToken")?.value;
-
-  return {
-    accessToken,
-    refreshToken
-  };
 }
 
 export function getJwtTimeLeft(token: string, secret: string) {

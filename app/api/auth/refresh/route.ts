@@ -1,5 +1,5 @@
 import { verifyAndRotate } from "@/lib/jwt";
-import { getCookiesTokens } from "@/lib/utils";
+import { getCookiesTokens } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

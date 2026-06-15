@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup } from "@/components/ui/input-group";
+import req from "@/lib/req";
 
 const formSchema = z.object({
   title: z
@@ -23,7 +24,11 @@ const formSchema = z.object({
   price: z.number()
 });
 
-const ProductCreate = () => {
+const ProductCreate = ({
+  onProductCreate
+}: {
+  onProductCreate: () => void;
+}) => {
   const form = useForm({
     defaultValues: {
       title: "",
@@ -33,6 +38,10 @@ const ProductCreate = () => {
       onSubmit: formSchema
     },
     onSubmit: async ({ value }) => {
+      await req.post("product", value);
+
+      onProductCreate();
+
       toast("You submitted the following values:", {
         description: (
           <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">

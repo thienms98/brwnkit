@@ -1,23 +1,22 @@
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
-import Link from "next/link";
+import { Product } from "@/generated/prisma/client";
+import req from "@/lib/req";
 
-const AdminProducts = () => {
+const AdminProducts = async ({
+  searchParams
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) => {
+  const page = (await searchParams).page;
+  const pageParam = page ? `page=${page}` : "";
+  const {
+    data: { products }
+  } = await req.get<{ products: Product[] }>(`/product?${pageParam}`);
+
   return (
     <div className="py-3 px-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl">Products</h1>
-        <Link
-          href="/admin/products/add"
-          className={cn(
-            buttonVariants(),
-            "flex items-center gap-2 cursor-pointer"
-          )}
-        >
-          <PlusIcon size={14} /> Add new product
-        </Link>
-      </div>
+      {products.map((prod) => (
+        <div key={prod.id}>{prod.title}</div>
+      ))}
     </div>
   );
 };
