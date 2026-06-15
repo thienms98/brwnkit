@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* @source "./app/@folder*.{js,ts,jsx,tsx}"; */
+/* @source "./src/app/@folder*.{js,ts,jsx,tsx}"; */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
