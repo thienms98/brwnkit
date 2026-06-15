@@ -5,14 +5,16 @@ import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 
 export async function GET(req: NextRequest) {
-  const page = req.nextUrl.searchParams.get("page") || 0;
+  const page = req.nextUrl.searchParams.get("page") || 1;
 
   const products = await prisma.product.findMany({
-    take: 1,
-    skip: +page
+    take: 12,
+    skip: +page - 1
   });
 
-  return NextResponse.json({ products });
+  const count = await prisma.product.count();
+
+  return NextResponse.json({ products, pagination: { total: count, page } });
 }
 
 export async function POST(req: NextRequest) {

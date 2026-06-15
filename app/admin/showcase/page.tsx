@@ -8,7 +8,7 @@ import { OrbitControls } from "@react-three/drei";
 
 const Showcase = () => {
   return (
-    <Canvas camera={{ position: [23, 6, 0] }}>
+    <Canvas camera={{ position: [22, 11, -5], fov: 80 }}>
       <Suspense fallback={<Loader />}>
         <Room />
       </Suspense>
