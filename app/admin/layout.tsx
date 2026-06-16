@@ -3,6 +3,8 @@ import { getJwtTimeLeft } from "@/lib/utils";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { AppSidebar } from "./_components/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const AdminLayout = async ({
   children,
@@ -27,18 +29,14 @@ const AdminLayout = async ({
   }
 
   return (
-    <div className="flex-1 h-screen relative">
-      <Header username={username} />
-      <div className="flex container mx-auto h-full">
-        <nav className="flex flex-col gap-4 border-r h-full">
-          <Link href="/admin">Dashboard</Link>
-          <Link href="/admin/showcase">Showcase</Link>
-          <Link href="/admin/products">Products</Link>
-        </nav>
-        <div className="flex-1 h-full">{children}</div>
+    <SidebarProvider>
+      <AppSidebar />
+      <div className="flex-1 h-screen relative flex flex-col">
+        <Header username={username} />
+        <main className="flex-1">{children}</main>
+        {modal}
       </div>
-      {modal}
-    </div>
+    </SidebarProvider>
   );
 };
 

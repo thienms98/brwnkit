@@ -8,6 +8,11 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator jsonTypes {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 datasource db {
   provider = "postgresql"
 }
@@ -37,6 +42,8 @@ model Product {
   updatedAt  DateTime  @updatedAt
   archivedAt DateTime?
 
+  roomObjects RoomObject[]
+
   productParts ProductPart[]
 }
 
@@ -55,3 +62,29 @@ model ProductPart {
 // ProductPart
 // MaterialOption
 // SavedConfig
+
+model Room {
+  id    Int    @id @default(autoincrement())
+  title String
+  slug  String @unique
+  url   String
+
+  roomObjects RoomObject[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+}
+
+model RoomObject {
+  id      Int    @id @default(autoincrement())
+  name    String
+  /// @Type(PrismaJson.Vector3Data)
+  hotspot Json
+
+  roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+}
