@@ -5,7 +5,7 @@ import { useRoom } from "@/store/room";
 import { useGLTF } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import { useEffect } from "react";
-import { Mesh, Object3D } from "three";
+import { Mesh } from "three";
 import { EffectComposer, Outline } from "@react-three/postprocessing";
 
 const Room = () => {
@@ -37,13 +37,15 @@ const Room = () => {
           e.stopPropagation();
           const mesh = e.object as unknown as Mesh;
           if (!mesh.isMesh) return;
+          console.log("🚀 ~ Room ~ mesh:", mesh);
           setSelectedMesh(mesh);
         }}
       />
       <EffectComposer autoClear={false}>
         {selectedMesh ? (
           <Outline
-            selection={selectedMesh as unknown as Object3D}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            selection={selectedMesh as any}
             edgeStrength={10}
             blur
             visibleEdgeColor={0xffffff}

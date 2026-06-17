@@ -15,8 +15,8 @@ const projects = [
     icon: HomeIcon
   },
   {
-    name: "Showcase",
-    url: "/admin/showcase",
+    name: "Rooms",
+    url: "/admin/rooms",
     icon: WallpaperIcon
   },
   {

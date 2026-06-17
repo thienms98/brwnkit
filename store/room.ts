@@ -1,4 +1,4 @@
-import { Mesh } from "three";
+import { Mesh, Object3D } from "three";
 import { create } from "zustand";
 
 interface RoomStore {
@@ -6,8 +6,8 @@ interface RoomStore {
     objects: Mesh[];
   };
   setObjects: (meshes: Mesh[]) => void;
-  selectedMesh: Mesh | null;
-  setSelectedMesh: (mesh: Mesh | null) => void;
+  selectedMesh: Object3D | null;
+  setSelectedMesh: (mesh: Object3D | null) => void;
 }
 
 export const useRoom = create<RoomStore>((set) => ({

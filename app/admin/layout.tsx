@@ -23,6 +23,7 @@ const AdminLayout = async ({
     try {
       const payload = verify(accessToken, process.env.ACCESS_SECRET!);
       username = String(payload.sub || "");
+      console.log("🚀 ~ AdminLayout ~ username:", username);
     } catch {
       username = "";
     }
