@@ -6,24 +6,24 @@ import {
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover";
+import { Product } from "@/generated/prisma/client";
 import { useProducts } from "@/hooks/queries/use-products";
-import req from "@/lib/req";
-import { productServices } from "@/services/product.service";
+import { cn } from "@/lib/utils";
 import { LoaderCircleIcon } from "lucide-react";
-import { use, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 
 const ProductSelector = () => {
   const [page, setPage] = useState(1);
   const [q, setQ] = useState("");
 
   const { data, isLoading } = useProducts(page);
+  const [selectedProd, setSelectedProd] = useState<Product>();
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button disabled={isLoading} className="w-full">
-          Select a product{" "}
+          {selectedProd ? selectedProd.title : "Select a product"}
           {isLoading && <LoaderCircleIcon size={16} className="animate-spin" />}
         </Button>
       </PopoverTrigger>
@@ -40,7 +40,16 @@ const ProductSelector = () => {
           <div>
             {data
               ? data.products.map((prod) => (
-                  <div key={prod.id} className="p-1">
+                  <div
+                    key={prod.id}
+                    className={cn(
+                      "p-1 px-2 rouned-sm transition-colors cursor-pointer",
+                      selectedProd?.id === prod.id
+                        ? "bg-primary"
+                        : "hover:bg-primary/50"
+                    )}
+                    onClick={() => setSelectedProd(prod)}
+                  >
                     {prod.title}
                   </div>
                 ))

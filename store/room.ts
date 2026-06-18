@@ -1,11 +1,11 @@
-import { Mesh, Object3D } from "three";
+import { Object3D } from "three";
 import { create } from "zustand";
 
 interface RoomStore {
   room: {
-    objects: Mesh[];
+    objects: Object3D[];
   };
-  setObjects: (meshes: Mesh[]) => void;
+  setObjects: (meshes: Object3D[]) => void;
   selectedMesh: Object3D | null;
   setSelectedMesh: (mesh: Object3D | null) => void;
 }

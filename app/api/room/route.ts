@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   } = (await req.json()) as {
     title: string;
     url: string;
-    objects: [
+    objects?: [
       {
         name: string;
         productId: number;
@@ -42,7 +42,11 @@ export async function POST(req: NextRequest) {
       }
     ];
   };
-  const slug = slugify(title);
+  const slug = slugify(title, {
+    lower: true,
+    trim: true,
+    replacement: "-"
+  });
 
   try {
     const rooms = await prisma.room.create({
