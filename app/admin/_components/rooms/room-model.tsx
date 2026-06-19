@@ -18,7 +18,7 @@ const RoomModel = ({ room }: { room: Room }) => {
   const setSelectedMesh = useRoom((state) => state.setSelectedMesh);
   const watcher = useWatcher((state) => state.activeWatcher);
 
-  const { setOpen } = useSidebar();
+  // const { setOpen } = useSidebar();
 
   useEffect(() => {
     // setOpen(false);

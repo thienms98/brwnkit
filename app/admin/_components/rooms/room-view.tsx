@@ -20,7 +20,7 @@ import {
   CardHeader
 } from "@/components/ui/card";
 import RoomModel from "./room-model";
-import Loader from "../loader";
+import Loader from "@/components/ui/loader";
 import ProductSelector from "../product-selector";
 import { Room } from "@/generated/prisma/client";
 import CameraList from "../watcher/watcher-list";

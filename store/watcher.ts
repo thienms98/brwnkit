@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-interface Watcher {
+export interface Watcher {
   key: string;
   position: {
     [key in "x" | "y" | "z"]: number;
