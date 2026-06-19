@@ -31,15 +31,12 @@ const Room = ({ room }: { room: RoomType }) => {
 
 export default Room;
 
-const RoomModel = ({
-  room: { url, watchers }
-}: {
-  room: Omit<RoomType, "watchers"> & { watchers: Watcher[] };
-}) => {
-  const { scene } = useGLTF(url);
+const RoomModel = ({ room }: { room: RoomType }) => {
+  const { scene } = useGLTF(room.url);
   const { camera } = useThree();
 
   useGSAP(() => {
+    const watchers = room.watchers as unknown as Watcher[];
     if (watchers.length < 2) return;
 
     camera.position.set(
@@ -88,7 +85,7 @@ const RoomModel = ({
         }
       });
     });
-  }, [watchers]);
+  }, []);
 
   return (
     <>
