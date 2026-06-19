@@ -1,23 +1,27 @@
 "use client";
 
 import { useSidebar } from "@/components/ui/sidebar";
+import { Room } from "@/generated/prisma/client";
 import { useRoom } from "@/store/room";
+import { useWatcher } from "@/store/watcher";
 import { useGLTF } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
+import { ThreeEvent, useThree } from "@react-three/fiber";
+import { EffectComposer, Outline } from "@react-three/postprocessing";
 import { useEffect } from "react";
 import { Mesh, Object3D } from "three";
-import { EffectComposer, Outline } from "@react-three/postprocessing";
 
-const Room = ({ modelUrl }: { modelUrl: string }) => {
-  const { scene } = useGLTF(modelUrl);
+const RoomModel = ({ room }: { room: Room }) => {
+  const { scene } = useGLTF(room.url);
+  const { camera } = useThree();
   const setObjects = useRoom((state) => state.setObjects);
   const selectedMesh = useRoom((state) => state.selectedMesh);
   const setSelectedMesh = useRoom((state) => state.setSelectedMesh);
+  const watcher = useWatcher((state) => state.activeWatcher);
 
   const { setOpen } = useSidebar();
 
   useEffect(() => {
-    setOpen(false);
+    // setOpen(false);
 
     const objects: Object3D[] = [];
     scene.traverse((obj) => {
@@ -32,7 +36,15 @@ const Room = ({ modelUrl }: { modelUrl: string }) => {
       }
     });
     setObjects(objects);
-  }, [scene]);
+  }, [scene, setObjects]);
+
+  useEffect(() => {
+    if (!watcher) return;
+
+    const { position, lookAt } = watcher;
+    camera.position.set(position.x, position.y, position.z);
+    camera.lookAt(lookAt.x, lookAt.y, lookAt.z);
+  }, [camera, watcher]);
 
   return (
     <>
@@ -63,4 +75,4 @@ const Room = ({ modelUrl }: { modelUrl: string }) => {
   );
 };
 
-export default Room;
+export default RoomModel;

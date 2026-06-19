@@ -23,19 +23,14 @@ import RoomModel from "./room-model";
 import Loader from "../loader";
 import ProductSelector from "../product-selector";
 import { Room } from "@/generated/prisma/client";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput
-} from "@/components/ui/input-group";
+import CameraList from "../watcher/watcher-list";
+import WatcherInput from "../watcher/watcher-input";
 
 const RoomView = ({ roomData }: { roomData: Room }) => {
   const [isOpen, setIsOpen] = useState(true);
   const room = useRoom((state) => state.room);
   const selectedMesh = useRoom((state) => state.selectedMesh);
   const setSelectedMesh = useRoom((state) => state.setSelectedMesh);
-
-  const [hotspot, setHotspot] = useState({ x: 0, y: 0, z: 0 });
 
   return (
     <div className="flex w-full h-full">
@@ -46,7 +41,7 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
             className="flex-1"
           >
             <Suspense fallback={<Loader />}>
-              <RoomModel modelUrl={roomData.url} />
+              <RoomModel room={roomData} />
             </Suspense>
 
             <ambientLight intensity={1} />
@@ -60,20 +55,18 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="flex w-full flex-col gap-2"
+          className="flex w-full flex-col gap-2 border"
         >
           <CollapsibleTrigger asChild>
-            <Button className="w-full">
-              <div className="flex items-center justify-between gap-4">
-                <h4 className="text-sm font-semibold">Objects</h4>
-                <ChevronsUpDown />
-              </div>
+            <Button className="w-full flex items-center justify-start gap-4 p-4">
+              <h4 className="text-sm font-semibold">Objects</h4>
+              <ChevronsUpDown className="ml-auto" />
             </Button>
           </CollapsibleTrigger>
-          <CollapsibleContent className="max-h-50 overflow-auto">
-            {room.objects.map((object) => (
+          <CollapsibleContent className="max-h-50 overflow-auto p-2">
+            {Array.from(room.objects).map(([key, { object }]) => (
               <div
-                key={object.id}
+                key={key}
                 className={cn(
                   "text-sm px-4 py-2 rounded-lg cursor-pointer transition-colors",
                   object.id === selectedMesh?.id
@@ -82,8 +75,6 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
                 )}
                 onClick={() => {
                   setSelectedMesh(object);
-                  const { x, y, z } = object.position;
-                  setHotspot({ x, y, z });
                 }}
               >
                 {object.name}
@@ -91,6 +82,7 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
             ))}
           </CollapsibleContent>
         </Collapsible>
+
         {selectedMesh && (
           <Card className="mt-10">
             <CardHeader>
@@ -98,44 +90,15 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
             </CardHeader>
             <CardContent>
               <ProductSelector />
-              <div className="flex gap-4">
-                <InputGroup>
-                  <InputGroupInput
-                    value={hotspot.x}
-                    type="number"
-                    onChange={(e) =>
-                      setHotspot((prev) => ({ ...prev, x: +e.target.value }))
-                    }
-                  />
-                  <InputGroupAddon>x</InputGroupAddon>
-                </InputGroup>
-                <InputGroup>
-                  <InputGroupInput
-                    value={hotspot.y}
-                    type="number"
-                    onChange={(e) =>
-                      setHotspot((prev) => ({ ...prev, y: +e.target.value }))
-                    }
-                  />
-                  <InputGroupAddon>y</InputGroupAddon>
-                </InputGroup>
-                <InputGroup>
-                  <InputGroupInput
-                    value={hotspot.z}
-                    type="number"
-                    onChange={(e) =>
-                      setHotspot((prev) => ({ ...prev, z: +e.target.value }))
-                    }
-                  />
-                  <InputGroupAddon>z</InputGroupAddon>
-                </InputGroup>
-              </div>
             </CardContent>
             <CardFooter>
               <Button className="ml-auto">Save</Button>
             </CardFooter>
           </Card>
         )}
+
+        <CameraList />
+        <WatcherInput />
       </div>
     </div>
   );
