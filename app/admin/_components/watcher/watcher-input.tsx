@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
@@ -10,6 +11,7 @@ import { useWatcher } from "@/store/watcher";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ChevronsUpDown } from "lucide-react";
 
 type Axis = "x" | "y" | "z";
 
@@ -38,6 +40,7 @@ const WatcherInput = () => {
         <InputGroupInput
           value={activeWatcher[field][axis]}
           type="number"
+          step={0.1}
           onChange={handleChange(field, axis)}
         />
         <InputGroupAddon>{axis}</InputGroupAddon>
@@ -51,15 +54,29 @@ const WatcherInput = () => {
       await req.put(`/room/${id}`, {
         watchers
       });
+      toast.success("Watchers updated");
     } catch {
-      toast.error("Looi ui`");
+      toast.error("Cannot update watchers");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="py-2 flex flex-col gap-2">
+      <Label className="grid grid-cols-4 gap-4">
+        <span>Name</span>
+        <Input
+          className="col-span-3"
+          value={activeWatcher.name}
+          onChange={(e) =>
+            updateWatcher({
+              ...activeWatcher,
+              name: e.target.value
+            })
+          }
+        />
+      </Label>
       <div className="grid grid-cols-4 gap-4">
         <Label>Position</Label>
         {renderAxes("position")}
@@ -68,8 +85,12 @@ const WatcherInput = () => {
         <Label>Look at</Label>
         {renderAxes("lookAt")}
       </div>
-      <Button disabled={loading} onClick={saveWatchers}>
-        Save watchers
+      <Button
+        disabled={loading}
+        onClick={saveWatchers}
+        className="ml-auto mt-2 px-4 sticky bottom-0"
+      >
+        Save
       </Button>
     </div>
   );

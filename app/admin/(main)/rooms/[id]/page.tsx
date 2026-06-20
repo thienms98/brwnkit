@@ -1,6 +1,6 @@
+import RoomView from "@/app/admin/_components/rooms/room-view";
 import { Room } from "@/generated/prisma/client";
 import req from "@/lib/req";
-import RoomView from "../../_components/rooms/room-view";
 
 import { notFound } from "next/navigation";
 

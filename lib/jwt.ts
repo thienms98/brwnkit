@@ -1,5 +1,5 @@
 import { Account } from "@/generated/prisma/client";
-import { sign, verify } from "jsonwebtoken";
+import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { v4 } from "uuid";
 import { prisma } from "./prisma";
 import { accessSecret, refreshSecret } from "@/constants/keys";
@@ -64,3 +64,16 @@ export const verifyAndRotate = async (refreshToken: string) => {
 
   return { accessToken, refreshToken: newRefreshToken, payload };
 };
+
+interface AccessTokenPayload extends JwtPayload {
+  userId: string;
+  role: string;
+}
+
+export function getValidPayload(token: string): AccessTokenPayload | null {
+  try {
+    return verify(token, process.env.ACCESS_SECRET!) as AccessTokenPayload;
+  } catch {
+    return null;
+  }
+}

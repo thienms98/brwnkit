@@ -4,7 +4,7 @@ import { useWatcher } from "@/store/watcher";
 import { CameraIcon, PlusIcon } from "lucide-react";
 import { v4 } from "uuid";
 
-const CameraList = () => {
+const WatcherList = () => {
   const selectedMesh = useRoom((state) => state.selectedMesh);
   const watchers = useWatcher((state) => state.watchers);
   const addWatcher = useWatcher((state) => state.addWatcher);
@@ -14,6 +14,7 @@ const CameraList = () => {
     if (!selectedMesh)
       addWatcher({
         key: v4(),
+        name: "",
         position: { x: 0, y: 0, z: 0 },
         lookAt: { x: 0, y: 0, z: 0 }
       });
@@ -21,6 +22,7 @@ const CameraList = () => {
       const { x, y, z } = selectedMesh.position;
       addWatcher({
         key: v4(),
+        name: "",
         position: { x: 0, y: 0, z: 0 },
         lookAt: { x, y, z }
       });
@@ -28,11 +30,11 @@ const CameraList = () => {
   };
 
   return (
-    <div>
+    <div className="flex gap-2 py-3">
       {watchers.map((watcher) => (
         <Button key={watcher.key} onClick={() => setActiveWatcher(watcher.key)}>
           <CameraIcon />
-          <p>{watcher.key}</p>
+          <p>{watcher.name || "Untitle"}</p>
         </Button>
       ))}
 
@@ -44,4 +46,4 @@ const CameraList = () => {
   );
 };
 
-export default CameraList;
+export default WatcherList;

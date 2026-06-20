@@ -1,9 +1,9 @@
-import Header from "./_components/header";
+import Header from "../_components/header";
 import { getJwtTimeLeft } from "@/lib/utils";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { AppSidebar } from "./_components/sidebar";
+import { AppSidebar } from "../_components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 const AdminLayout = async ({

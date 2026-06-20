@@ -1,7 +1,4 @@
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
-import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Pagination,
@@ -11,6 +8,9 @@ import {
 } from "@/components/ui/pagination";
 import { Room } from "@/generated/prisma/client";
 import req from "@/lib/req";
+import { cn } from "@/lib/utils";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 const RoomPage = async ({
   searchParams

@@ -1,36 +1,40 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
-import { useRoom } from "@/store/room";
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader
 } from "@/components/ui/card";
-import RoomModel from "./room-model";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
+import { Label } from "@/components/ui/label";
 import Loader from "@/components/ui/loader";
-import ProductSelector from "../product-selector";
 import { Room } from "@/generated/prisma/client";
-import CameraList from "../watcher/watcher-list";
-import WatcherInput from "../watcher/watcher-input";
+import { cn } from "@/lib/utils";
+import { useRoom } from "@/store/room";
+import { useWatcher, Watcher as WatcherType } from "@/store/watcher";
+import { Canvas } from "@react-three/fiber";
+import { ChevronsUpDown } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
+import ProductSelector from "../product-selector";
+import Watcher from "../watcher";
+import RoomModel from "./room-model";
 
 const RoomView = ({ roomData }: { roomData: Room }) => {
   const [isOpen, setIsOpen] = useState(true);
   const room = useRoom((state) => state.room);
   const selectedMesh = useRoom((state) => state.selectedMesh);
   const setSelectedMesh = useRoom((state) => state.setSelectedMesh);
+  const setWatchers = useWatcher((state) => state.setWatchers);
+
+  useEffect(() => {
+    setWatchers(roomData.watchers as unknown as WatcherType[]);
+  }, [roomData, setWatchers]);
 
   return (
     <div className="flex w-full h-full">
@@ -51,16 +55,19 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
           </Canvas>
         </div>
       </div>
-      <div className="w-1/3 h-full p-4 border border-l">
+      <div className="w-1/3 h-full p-4 shadow-md rounded-xs border">
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="flex w-full flex-col gap-2 border"
+          className="flex w-full flex-col gap-2 shadow-md"
         >
           <CollapsibleTrigger asChild>
-            <Button className="w-full flex items-center justify-start gap-4 p-4">
+            <Button
+              variant={"outline"}
+              className="w-full flex items-center justify-start gap-4 p-4"
+            >
               <h4 className="text-sm font-semibold">Objects</h4>
-              <ChevronsUpDown className="ml-auto" />
+              <ChevronsUpDown className="ml-auto" size={16} />
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="max-h-50 overflow-auto p-2">
@@ -84,7 +91,7 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
         </Collapsible>
 
         {selectedMesh && (
-          <Card className="mt-10">
+          <Card className="mt-3 shadow-md rounded-xs">
             <CardHeader>
               <Label>{selectedMesh.name}</Label>
             </CardHeader>
@@ -97,8 +104,7 @@ const RoomView = ({ roomData }: { roomData: Room }) => {
           </Card>
         )}
 
-        <CameraList />
-        <WatcherInput />
+        <Watcher />
       </div>
     </div>
   );
