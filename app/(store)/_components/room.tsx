@@ -1,21 +1,19 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
 import Loader from "@/components/ui/loader";
 import { Room as RoomType } from "@/generated/prisma/client";
-import { useGLTF } from "@react-three/drei";
-import { ThreeEvent, useThree } from "@react-three/fiber";
-import { Mesh } from "three";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Watcher } from "@/store/watcher";
+import { useGSAP } from "@gsap/react";
+import { useGLTF } from "@react-three/drei";
+import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Suspense } from "react";
+import { Mesh } from "three";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Room = ({ room }: { room: RoomType }) => {
-  console.log("🚀 ~ Room ~ room:", room);
   return (
     <Canvas className="flex-1">
       <Suspense fallback={<Loader />}>
@@ -64,8 +62,7 @@ const RoomModel = ({ room }: { room: RoomType }) => {
         trigger: document.body,
         start: "top top",
         end: `+=${(watchers.length - 1) * 1000}`,
-        scrub: 1,
-        markers: true
+        scrub: 1
       }
     });
 

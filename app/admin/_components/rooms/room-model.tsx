@@ -25,7 +25,6 @@ const RoomModel = ({ room }: { room: Room }) => {
 
     const objects: Object3D[] = [];
     scene.traverse((obj) => {
-      console.log(obj.name);
       const object = obj as unknown as Object3D;
       if (
         obj !== scene &&

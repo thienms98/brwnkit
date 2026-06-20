@@ -11,9 +11,10 @@ import {
 import { useRouter } from "next/navigation";
 
 const RoomAddModal = () => {
-  const { back } = useRouter();
+  const { back, refresh } = useRouter();
 
   const onRoomCreate = () => {
+    refresh();
     back();
   };
 

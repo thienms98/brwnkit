@@ -11,9 +11,10 @@ import {
 import { useRouter } from "next/navigation";
 
 const AdminProductAddModal = () => {
-  const { back } = useRouter();
+  const { back, refresh } = useRouter();
 
   const onProductCreate = () => {
+    refresh();
     back();
   };
 
