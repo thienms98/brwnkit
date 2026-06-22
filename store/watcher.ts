@@ -1,15 +1,5 @@
+import { Watcher } from "@/types/room";
 import { create } from "zustand";
-
-export interface Watcher {
-  key: string;
-  name: string;
-  position: {
-    [key in "x" | "y" | "z"]: number;
-  };
-  lookAt: {
-    [key in "x" | "y" | "z"]: number;
-  };
-}
 
 interface WatcherStore {
   watchers: Watcher[];

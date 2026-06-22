@@ -58,7 +58,8 @@ export async function POST(req: NextRequest) {
           createMany: {
             data: objects
           }
-        }
+        },
+        watchers: []
       }
     });
 

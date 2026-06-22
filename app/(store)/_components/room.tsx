@@ -1,8 +1,7 @@
 "use client";
 
 import Loader from "@/components/ui/loader";
-import { Room as RoomType } from "@/generated/prisma/client";
-import { Watcher } from "@/store/watcher";
+import { IRoom, Watcher } from "@/types/room";
 import { useGSAP } from "@gsap/react";
 import { useGLTF } from "@react-three/drei";
 import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
@@ -13,7 +12,7 @@ import { Mesh } from "three";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const Room = ({ room }: { room: RoomType }) => {
+const Room = ({ room }: { room: IRoom }) => {
   return (
     <Canvas className="flex-1">
       <Suspense fallback={<Loader />}>
@@ -29,7 +28,7 @@ const Room = ({ room }: { room: RoomType }) => {
 
 export default Room;
 
-const RoomModel = ({ room }: { room: RoomType }) => {
+const RoomModel = ({ room }: { room: IRoom }) => {
   const { scene } = useGLTF(room.url);
   const { camera } = useThree();
 

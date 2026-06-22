@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRoom } from "@/store/room";
-import { useWatcher, Watcher } from "@/store/watcher";
+import { useWatcher } from "@/store/watcher";
+import { Watcher } from "@/types/room";
 import { arrayMove, move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";

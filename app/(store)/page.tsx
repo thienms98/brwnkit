@@ -1,13 +1,12 @@
 import req from "@/lib/req";
-import { Room as RoomType } from "@/generated/prisma/client";
 import { notFound } from "next/navigation";
 import Room from "./_components/room";
-import { Watcher } from "@/store/watcher";
+import { IRoom } from "@/types/room";
 
 export default async function Home() {
-  let room: RoomType;
+  let room: IRoom;
   try {
-    const { data } = await req.get<{ room: RoomType }>(`room/1`);
+    const { data } = await req.get<{ room: IRoom }>(`room/1`);
 
     room = data.room;
   } catch {
@@ -20,7 +19,7 @@ export default async function Home() {
       <div
         id="scroll-driver"
         style={{
-          height: (room.watchers as unknown as Watcher[]).length * 1000
+          height: room.watchers.length * 1000
         }}
       />
 

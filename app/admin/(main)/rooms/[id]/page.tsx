@@ -1,15 +1,15 @@
 import RoomView from "@/app/admin/_components/rooms/room-view";
-import { Room } from "@/generated/prisma/client";
 import req from "@/lib/req";
+import { IRoom } from "@/types/room";
 
 import { notFound } from "next/navigation";
 
 const RoomPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  let room: Room;
+  let room: IRoom;
 
   try {
-    const { data } = await req.get<{ room: Room }>(`room/${id}`);
+    const { data } = await req.get<{ room: IRoom }>(`room/${id}`);
 
     room = data.room;
   } catch {

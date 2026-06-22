@@ -9,14 +9,22 @@ import { Product } from "@/generated/prisma/client";
 import { useProducts } from "@/hooks/queries/use-products";
 import { cn } from "@/lib/utils";
 import { LoaderCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ProductSelector = () => {
+const ProductSelector = ({
+  onChange
+}: {
+  onChange: (prod?: Product) => void;
+}) => {
   const [page, setPage] = useState(1);
   const [q, setQ] = useState("");
 
   const { data, isLoading } = useProducts(page);
   const [selectedProd, setSelectedProd] = useState<Product>();
+
+  useEffect(() => {
+    onChange(selectedProd);
+  }, [onChange, selectedProd]);
 
   return (
     <Popover>
