@@ -7,6 +7,7 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import { HomeIcon, Package2Icon, WallpaperIcon } from "lucide-react";
+import Link from "next/link";
 
 const projects = [
   {
@@ -29,7 +30,9 @@ const projects = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader>BrwnKit</SidebarHeader>
+      <SidebarHeader>
+        <Link href="/">BrwnKit</Link>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
           {projects.map((project) => (

@@ -25,6 +25,8 @@ import { Suspense, useEffect, useState } from "react";
 import ProductSelector from "../product-selector";
 import Watcher from "../watcher";
 import RoomModel from "./room-model";
+import req from "@/lib/req";
+import { toast } from "sonner";
 
 const RoomView = ({ roomData }: { roomData: IRoom }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -37,8 +39,19 @@ const RoomView = ({ roomData }: { roomData: IRoom }) => {
     setWatchers(roomData.watchers || []);
   }, [roomData, setWatchers]);
 
-  const onProductChange = (product?: Product) => {
+  const onProductChange = async (product?: Product) => {
     if (!selectedMesh) return;
+
+    try {
+      if (product)
+        await req.put(`/api/room/${roomData.id}/objects/${selectedMesh.name}`, {
+          productId: product.id
+        });
+    } catch {
+      toast("Fail");
+    } finally {
+      toast("Success");
+    }
   };
 
   return (
@@ -105,9 +118,9 @@ const RoomView = ({ roomData }: { roomData: IRoom }) => {
             <CardContent>
               <ProductSelector onChange={onProductChange} />
             </CardContent>
-            <CardFooter>
+            {/* <CardFooter className="pt-0">
               <Button className="ml-auto">Save</Button>
-            </CardFooter>
+            </CardFooter> */}
           </Card>
         )}
 
