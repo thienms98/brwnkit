@@ -11,11 +11,11 @@ export interface Watcher {
   };
 }
 
-export interface IRoomObjects extends RoomObject {
+export interface IRoomObject extends RoomObject {
   product: Product;
 }
 
 export interface IRoom extends Omit<Room, "watchers"> {
   watchers: Watcher[];
-  roomObjects: RoomObject[];
+  roomObjects: IRoomObject[];
 }

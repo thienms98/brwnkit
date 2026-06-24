@@ -34,7 +34,6 @@ const RoomCreate = ({ onRoomCreate }: { onRoomCreate: () => void }) => {
       onSubmit: formSchema
     },
     onSubmit: async ({ value }) => {
-      console.log("submitting");
       await req.post("room", value);
 
       onRoomCreate();

@@ -1,11 +1,11 @@
-import { RoomObject as IRoomObject } from "@/generated/prisma/client";
+import { Product } from "@/generated/prisma/client";
+import { IRoomObject } from "@/types/room";
 import { Object3D } from "three";
 import { create } from "zustand";
 
 interface RoomObject {
   object: Object3D;
-  hotspot?: { x: number; y: number; z: number };
-  product?: number;
+  product?: Product;
 }
 
 interface RoomStore {
@@ -13,8 +13,10 @@ interface RoomStore {
     objects: Map<string, RoomObject>;
   };
   setObjects: (object3Ds: Object3D[], roomObjects: IRoomObject[]) => void;
-  selectedMesh: Object3D | null;
-  setSelectedMesh: (mesh: Object3D | null) => void;
+  resetObjects: (roomObjects: IRoomObject[]) => void;
+  selectedMesh: RoomObject | null;
+  setSelectedMesh: (name: string | null) => void;
+  updateSelectedMesh: (payload: Partial<RoomObject>) => void;
 }
 
 export const useRoom = create<RoomStore>((set) => ({
@@ -22,22 +24,54 @@ export const useRoom = create<RoomStore>((set) => ({
   selectedMesh: null,
   setObjects: (object3Ds, roomObjects) =>
     set((state) => {
-      const newObjects = new Map(state.room.objects); // new Map = new reference
+      const newObjects = new Map(state.room.objects);
 
       object3Ds.forEach((object3D) => {
         const roomObject = roomObjects.find(
           (obj) => obj.name === object3D.name
         );
 
-        const { x, y, z } = object3D.position;
         newObjects.set(object3D.name, {
           object: object3D,
-          hotspot: { x, y, z },
-          product: roomObject?.productId
+          product: roomObject?.product
         });
       });
 
       return { room: { ...state.room, objects: newObjects } };
     }),
-  setSelectedMesh: (mesh) => set(() => ({ selectedMesh: mesh }))
+  resetObjects: (objects) =>
+    set((state) => {
+      const newObjects = new Map(state.room.objects);
+
+      newObjects.entries().forEach(([key, value]) => {
+        const product = objects.find((item) => item.name === key)?.product;
+
+        newObjects.set(key, {
+          object: value.object,
+          product
+        });
+      });
+
+      return { room: { ...state.room, objects: newObjects } };
+    }),
+  setSelectedMesh: (name) =>
+    set((state) => ({
+      selectedMesh: name ? state.room.objects.get(name) : null
+    })),
+  updateSelectedMesh: (payload) =>
+    set((state) => {
+      if (!state.selectedMesh) return state;
+      const name = state.selectedMesh.object.name;
+      const newSelectedMesh = { ...state.selectedMesh, ...payload };
+
+      const newObjects = new Map(state.room.objects);
+      newObjects.set(name, newSelectedMesh);
+
+      return {
+        room: {
+          objects: newObjects
+        },
+        selectedMesh: newSelectedMesh
+      };
+    })
 }));

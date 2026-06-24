@@ -12,25 +12,22 @@ import { LoaderCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ProductSelector = ({
+  value,
   onChange
 }: {
+  value?: Product;
   onChange: (prod?: Product) => void;
 }) => {
   const [page, setPage] = useState(1);
   const [q, setQ] = useState("");
 
   const { data, isLoading } = useProducts(page);
-  const [selectedProd, setSelectedProd] = useState<Product>();
-
-  useEffect(() => {
-    onChange(selectedProd);
-  }, [onChange, selectedProd]);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button disabled={isLoading} className="w-full">
-          {selectedProd ? selectedProd.title : "Select a product"}
+        <Button disabled={isLoading} className="flex-1">
+          {value ? value.title : "Select a product"}
           {isLoading && <LoaderCircleIcon size={16} className="animate-spin" />}
         </Button>
       </PopoverTrigger>
@@ -51,11 +48,11 @@ const ProductSelector = ({
                     key={prod.id}
                     className={cn(
                       "p-1 px-2 rouned-sm transition-colors cursor-pointer",
-                      selectedProd?.id === prod.id
+                      value?.id === prod.id
                         ? "bg-primary"
                         : "hover:bg-primary/50"
                     )}
-                    onClick={() => setSelectedProd(prod)}
+                    onClick={() => onChange(prod)}
                   >
                     {prod.title}
                   </div>

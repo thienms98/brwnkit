@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useRoom } from "@/store/room";
 import { useWatcher } from "@/store/watcher";
 import { Watcher } from "@/types/room";
-import { arrayMove, move } from "@dnd-kit/helpers";
+import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { CameraIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
@@ -25,7 +25,7 @@ const WatcherList = () => {
         lookAt: { x: 0, y: 0, z: 0 }
       });
     else {
-      const { x, y, z } = selectedMesh.position;
+      const { x, y, z } = selectedMesh.object.position;
       addWatcher({
         key: v4(),
         name: "",

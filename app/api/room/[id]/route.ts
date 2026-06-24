@@ -19,7 +19,11 @@ export async function GET(
         ]
       },
       include: {
-        roomObjects: true
+        roomObjects: {
+          include: {
+            product: true
+          }
+        }
       }
     });
 
@@ -37,21 +41,44 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const { id } = await params;
-    const { watchers } = await req.json();
-    const room = await prisma.room.update({
-      where: {
-        id: +id
-      },
-      data: {
-        watchers
-      }
+    const { watchers, objects } = await req.json();
+
+    const roomId = +id;
+
+    const existing = await prisma.roomObject.findMany({
+      where: { roomId },
+      select: { name: true, productId: true }
     });
 
-    return NextResponse.json({ room });
+    const toDelete = existing.filter(
+      (e) => !objects.find((o: any) => o.name === e.name)
+    );
+    const toCreate = objects.filter(
+      (o: any) => !existing.find((e) => e.name === o.name)
+    );
+
+    await prisma.$transaction([
+      prisma.room.update({
+        where: { id: roomId },
+        data: { watchers }
+      }),
+      prisma.roomObject.deleteMany({
+        where: { roomId, name: { in: toDelete.map((e) => e.name) } }
+      }),
+      prisma.roomObject.createMany({
+        data: toCreate.map((o: any) => ({
+          roomId,
+          name: o.name,
+          productId: o.productId
+        }))
+      })
+    ]);
+
+    return NextResponse.json({ success: true });
   } catch (err: any) {
-    console.error("[QUERY ROOM]: ", err.message);
+    console.error(`[UPDATE ROOM ${id}]: `, err.message);
     return NextResponse.json(
       { message: "Failed to get room" },
       { status: 500 }

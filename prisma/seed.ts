@@ -45,8 +45,6 @@ async function main() {
       }
     ]
   });
-
-  console.log({ admin, product, parts });
 }
 
 main()

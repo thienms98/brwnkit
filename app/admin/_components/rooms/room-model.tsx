@@ -1,9 +1,8 @@
 "use client";
 
-import { useSidebar } from "@/components/ui/sidebar";
 import { useRoom } from "@/store/room";
 import { useWatcher } from "@/store/watcher";
-import { IRoom, Watcher } from "@/types/room";
+import { IRoom } from "@/types/room";
 import { useGLTF } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { EffectComposer, Outline } from "@react-three/postprocessing";
@@ -18,10 +17,8 @@ const RoomModel = ({ room }: { room: IRoom }) => {
   const setSelectedMesh = useRoom((state) => state.setSelectedMesh);
   const watcher = useWatcher((state) => state.activeWatcher);
 
-  // const { setOpen } = useSidebar();
   useEffect(() => {
-    const watchers = (room.watchers as unknown as Watcher[]) || [];
-    console.log("🚀 ~ RoomModel ~ watchers:", watchers);
+    const watchers = room.watchers || [];
     if (watchers[0]) {
       const { position, lookAt } = watchers[0];
       camera.position.set(position.x, position.y, position.z);
@@ -32,16 +29,14 @@ const RoomModel = ({ room }: { room: IRoom }) => {
   useEffect(() => {
     const objects: Object3D[] = [];
     scene.traverse((obj) => {
-      const object = obj as unknown as Object3D;
       if (
         obj !== scene &&
         obj.name &&
         obj.children.some((child) => (child as unknown as Mesh).isMesh)
       ) {
-        objects.push(object);
+        objects.push(obj);
       }
     });
-    console.log(room.roomObjects);
     setObjects(objects, room.roomObjects);
   }, [scene, setObjects]);
 
@@ -61,14 +56,13 @@ const RoomModel = ({ room }: { room: IRoom }) => {
           e.stopPropagation();
           const mesh = e.object as unknown as Mesh;
           if (!mesh.isObject3D) return;
-          console.log("🚀 ~ Room ~ mesh:", mesh);
-          setSelectedMesh(mesh.parent);
+          setSelectedMesh(mesh.parent?.name ?? null);
         }}
       />
       <EffectComposer autoClear={false}>
         {selectedMesh ? (
           <Outline
-            selection={selectedMesh.children as any}
+            selection={selectedMesh.object.children as any}
             edgeStrength={10}
             blur
             visibleEdgeColor={0xffffff}

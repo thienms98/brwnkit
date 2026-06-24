@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { AppSidebar } from "../_components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import FloatingBar from "../_components/floating-bar";
 
 const AdminLayout = async ({
   children,
@@ -23,7 +24,6 @@ const AdminLayout = async ({
     try {
       const payload = verify(accessToken, process.env.ACCESS_SECRET!);
       username = String(payload.sub || "");
-      console.log("🚀 ~ AdminLayout ~ username:", username);
     } catch {
       username = "";
     }
@@ -36,6 +36,7 @@ const AdminLayout = async ({
         <Header username={username} />
         <main className="flex-1">{children}</main>
         {modal}
+        <FloatingBar />
       </div>
     </SidebarProvider>
   );

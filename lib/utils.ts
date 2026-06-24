@@ -1,6 +1,9 @@
+import { Product } from "@/generated/prisma/client";
+import { IRoomObject } from "@/types/room";
 import { clsx, type ClassValue } from "clsx";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { twMerge } from "tailwind-merge";
+import { Object3D } from "three";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,3 +26,21 @@ export function getJwtTimeLeft(token: string, secret: string) {
     return null;
   }
 }
+
+export const isObjectsDiff = (
+  ref: IRoomObject[],
+  target: Map<
+    string,
+    {
+      object: Object3D;
+      product?: Product;
+    }
+  >
+) =>
+  !target
+    .values()
+    .every(
+      (item) =>
+        item.product?.id ===
+        ref.find((i) => i.name === item.object.name)?.productId
+    );

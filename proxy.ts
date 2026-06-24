@@ -3,7 +3,6 @@ import { getValidPayload, verifyAndRotate } from "./lib/jwt";
 import { ROLE } from "./generated/prisma/enums";
 
 export async function proxy(req: NextRequest) {
-  console.log("proxyyys");
   const accessToken = req.cookies.get("accessToken")?.value;
   const refreshToken = req.cookies.get("refreshToken")?.value;
   const { pathname } = req.nextUrl;
