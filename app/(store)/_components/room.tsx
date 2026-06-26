@@ -1,14 +1,16 @@
 "use client";
 
 import Loader from "@/components/ui/loader";
-import { IRoom, Watcher } from "@/types/room";
+import { Product } from "@/generated/prisma/client";
+import { IRoom } from "@/types/room";
 import { useGSAP } from "@gsap/react";
-import { useGLTF } from "@react-three/drei";
+import { Html, useGLTF } from "@react-three/drei";
 import { Canvas, ThreeEvent, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Suspense } from "react";
-import { Mesh } from "three";
+import { useRouter } from "next/navigation";
+import { Suspense, useMemo } from "react";
+import { Mesh, Vector3 } from "three";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -31,9 +33,10 @@ export default Room;
 const RoomModel = ({ room }: { room: IRoom }) => {
   const { scene } = useGLTF(room.url);
   const { camera } = useThree();
+  const { push } = useRouter();
 
   useGSAP(() => {
-    const watchers = room.watchers as unknown as Watcher[];
+    const watchers = room.watchers;
     if (watchers.length < 2) return;
 
     camera.position.set(
@@ -83,6 +86,29 @@ const RoomModel = ({ room }: { room: IRoom }) => {
     });
   }, []);
 
+  const spots = useMemo(() => {
+    const array = new Map<
+      string,
+      { position: { [key in "x" | "y" | "z"]: number }; product: Product }
+    >();
+    const worldPosition = new Vector3();
+
+    scene.traverse((object) => {
+      const roomObject = room.roomObjects.find(
+        (obj) => object.name === obj.name
+      );
+      if (!roomObject) return;
+      object.getWorldPosition(worldPosition);
+      const { x, y, z } = worldPosition;
+
+      array.set(object.name, {
+        position: { x, y, z },
+        product: roomObject.product
+      });
+    });
+    return array;
+  }, [scene]);
+
   return (
     <>
       <primitive
@@ -93,6 +119,18 @@ const RoomModel = ({ room }: { room: IRoom }) => {
           if (!mesh.isObject3D) return;
         }}
       />
+
+      {Array.from(spots).map(([key, spot]) => (
+        <Html
+          key={key}
+          position={[spot.position.x, spot.position.y, spot.position.z]}
+        >
+          <div
+            onClick={() => push(`/products/${spot.product.slug}`)}
+            className="block size-3 rounded-full bg-white -translate-x-1/2 -translate-y-1/2 ring-0 ring-white ring-offset-8 ring-offset-black/50 hover:ring-2 hover:size-2 transition-all cursor-pointer"
+          ></div>
+        </Html>
+      ))}
       {/* <EffectComposer autoClear={false}>
         {selectedMesh ? (
           <Outline

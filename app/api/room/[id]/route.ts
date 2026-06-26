@@ -43,7 +43,7 @@ export async function PUT(
 ) {
   const { id } = await params;
   try {
-    const { watchers, objects } = await req.json();
+    const { watchers, objects = [] } = await req.json();
 
     const roomId = +id;
 
