@@ -16,15 +16,17 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const Room = ({ room }: { room: IRoom }) => {
   return (
-    <Canvas className="flex-1">
-      <Suspense fallback={<Loader />}>
-        <RoomModel room={room} />
-      </Suspense>
+    <div className="flex-1 md:h-full max-sm:w-screen max-sm:aspect-video">
+      <Canvas>
+        <Suspense fallback={<Loader />}>
+          <RoomModel room={room} />
+        </Suspense>
 
-      <ambientLight intensity={1} />
+        <ambientLight intensity={1} />
 
-      <directionalLight position={[10, 10, 10]} intensity={2} />
-    </Canvas>
+        <directionalLight position={[10, 10, 10]} intensity={2} />
+      </Canvas>
+    </div>
   );
 };
 

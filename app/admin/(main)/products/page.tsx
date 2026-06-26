@@ -30,7 +30,7 @@ const AdminProducts = async ({
     <div className="py-3 px-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {products.map((prod) => (
-          <Link href={`/admin/products/${prod.id}`} key={prod.id}>
+          <Link href={`/admin/products/${prod.slug}`} key={prod.id}>
             <Card className="overflow-hidden">
               <div className="h-32 w-full animate-pulse bg-muted" />
 

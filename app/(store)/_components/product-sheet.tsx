@@ -16,8 +16,18 @@ const ProductSheet = ({ product }: { product: Product }) => {
     <Sheet open onOpenChange={back}>
       <SheetContent className="h-4/5! translate-y-1/10">
         <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
-          <SheetDescription>Product {product.title}</SheetDescription>
+          <SheetTitle></SheetTitle>
+          <SheetDescription></SheetDescription>
+          <SheetContent>
+            <h3 className="capitalize text-lg">{product.title}</h3>
+            <p>
+              {new Intl.NumberFormat("en-EN", {
+                style: "currency",
+                currency: "USD",
+                trailingZeroDisplay: "stripIfInteger"
+              }).format(Number(product.price))}
+            </p>
+          </SheetContent>
         </SheetHeader>
       </SheetContent>
     </Sheet>
