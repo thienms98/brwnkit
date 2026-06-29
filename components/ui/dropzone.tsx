@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 interface DropzoneProps {
+  value?: string | null;
   onChange?: (file: File | null) => void;
 }
 
@@ -15,8 +16,8 @@ const ERROR_MESSAGES: Record<string, string> = {
   "too-many-files": "Please select only 1 file"
 };
 
-export default function Dropzone({ onChange }: DropzoneProps) {
-  const [preview, setPreview] = useState<string | null>(null);
+export default function Dropzone({ value, onChange }: DropzoneProps) {
+  const [preview, setPreview] = useState<string | null>(value ?? null);
 
   const onDrop = useCallback(
     (accepted: File[]) => {
@@ -38,8 +39,8 @@ export default function Dropzone({ onChange }: DropzoneProps) {
     fileRejections,
     open
   } = useDropzone({
-    accept: { "image/*": [".jpg", ".png", ".webp"] },
-    maxSize: 5 * 1024 * 1024,
+    // accept: { "image/*": [".jpg", ".png", ".webp"] },
+    // maxSize: 5 * 1024 * 1024,
     maxFiles: 1,
     noClick: !!preview,
     onDrop

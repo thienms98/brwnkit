@@ -8,5 +8,10 @@ export const productServices = {
     });
 
     return data;
+  },
+  async createProduct(
+    data: Omit<Partial<Product>, "price"> & { price: number }
+  ) {
+    await req.post("/product", data);
   }
 };

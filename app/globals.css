@@ -176,6 +176,19 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  --animate-horizontal-loading: horizontal-loading 1s ease-in-out infinite;
+
+  @keyframes horizontal-loading {
+    from {
+      transform: translateX(-100%);
+      left: 0;
+    }
+    to {
+      transform: translateX(100%);
+      left: 100%;
+    }
+  }
 }
 
 @layer base {

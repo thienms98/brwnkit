@@ -1,6 +1,7 @@
 import { ROLE } from "@/generated/prisma/enums";
 import { getAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sleep } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 
@@ -18,12 +19,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  await sleep(10000);
   try {
     const { role } = getAuth(req);
     if (role !== ROLE.ADMIN) throw new Error("Unauthorized");
 
-    const { title, price } = (await req.json()) as {
+    const { title, price, thumbnail } = (await req.json()) as {
       title: string;
+      thumbnail: string;
       price: number;
     };
 
@@ -36,6 +39,7 @@ export async function POST(req: NextRequest) {
     await prisma.product.create({
       data: {
         title,
+        thumbnail,
         slug,
         price
       }

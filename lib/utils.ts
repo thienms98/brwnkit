@@ -9,6 +9,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
 export function getJwtTimeLeft(token: string, secret: string) {
   try {
     const decodedToken = verify(token, secret) as JwtPayload;
