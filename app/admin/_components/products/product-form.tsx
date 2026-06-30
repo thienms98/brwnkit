@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { toast } from "sonner";
 import * as z from "zod";
 
 import {
@@ -19,18 +18,9 @@ import {
   FieldLabel
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { Product } from "@/generated/prisma/client";
-import { upload } from "@/lib/upload";
-import { productServices } from "@/services/product.service";
 import { useUnsavedChanges } from "@/store/unsaved-changes";
 import { useSelector } from "@tanstack/react-store";
-import {
-  CircleCheckIcon,
-  CircleDashedIcon,
-  CircleIcon,
-  CircleXIcon
-} from "lucide-react";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -43,57 +33,15 @@ const formSchema = z.object({
   modelUrl: z.string().optional()
 });
 
-type FormValues = z.infer<typeof formSchema>;
-type Status = "success" | "loading" | "error" | "none";
-interface ToastPayload {
-  upload?: Status;
-  progress: number;
-  create?: Status;
-}
+export type FormValues = z.infer<typeof formSchema>;
 
-const Status = ({ stat }: { stat?: Status }) => {
-  switch (stat) {
-    case "loading":
-      return <CircleDashedIcon className="text-primary animate-spin" />;
-    case "success":
-      return <CircleCheckIcon className="text-primary" />;
-    case "error":
-      return <CircleXIcon className="text-destructive" />;
-    default:
-      return <CircleIcon />;
-  }
-};
-
-export default function ProductForm({ product }: { product?: Product }) {
-  const toastId = "submit-toast";
-
-  const renderToast = ({ upload, progress, create }: ToastPayload) => {
-    return (
-      <div className="w-64 flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <Status stat={upload} />
-          <div className="flex-1">
-            <p className="text-sm">Upload thumbnail</p>
-            {upload === "loading" && (
-              <Progress key={progress} value={progress} />
-            )}
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Status stat={create} />
-          <div className="flex-1">
-            <p className="text-sm">Create product</p>
-            {create === "loading" && (
-              <div className="w-full h-1 mt-1 rounded-full bg-muted relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1/5 h-1 bg-primary transition-all animate-horizontal-loading"></div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
+export default function ProductForm({
+  product,
+  onSubmit
+}: {
+  product?: Product;
+  onSubmit?: (value: FormValues) => void;
+}) {
   const form = useForm({
     defaultValues: {
       title: product?.title,
@@ -104,53 +52,7 @@ export default function ProductForm({ product }: { product?: Product }) {
       onSubmit: formSchema
     },
     onSubmit: async ({ value }) => {
-      const payload: ToastPayload = {
-        upload: "loading",
-        progress: 0
-      };
-
-      toast(renderToast(payload), {
-        id: toastId,
-        duration: Infinity
-      });
-
-      try {
-        const { url = "" } = value.thumbnail
-          ? await upload(value.thumbnail, (p) => {
-              payload.progress = p;
-              toast(renderToast(payload), {
-                id: toastId,
-                duration: Infinity
-              });
-            })
-          : {};
-        payload.upload = "success";
-        payload.create = "loading";
-        toast(renderToast(payload), {
-          id: toastId,
-          duration: 3000
-        });
-
-        try {
-          await productServices.createProduct({ ...value, thumbnail: url });
-          payload.create = "success";
-
-          form.reset({ ...value, thumbnail: null });
-        } catch {
-          payload.create = "error";
-        } finally {
-          toast(renderToast(payload), {
-            id: toastId,
-            duration: 3000
-          });
-        }
-      } catch {
-        payload.upload = "error";
-        toast(renderToast(payload), {
-          id: toastId,
-          duration: 3000
-        });
-      }
+      onSubmit?.(value);
     }
   });
 
@@ -168,13 +70,6 @@ export default function ProductForm({ product }: { product?: Product }) {
     return () => unregister();
   }, []);
 
-  const isDirty = useSelector(form.store, (state) => state.isDirty);
-
-  useEffect(() => {
-    console.log("🚀 ~ ProductForm ~ isDirty:", isDirty);
-    setDirty(isDirty);
-  }, [isDirty]);
-
   return (
     <Card className="container mx-auto">
       <CardHeader>
@@ -187,6 +82,9 @@ export default function ProductForm({ product }: { product?: Product }) {
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit();
+          }}
+          onChange={() => {
+            setDirty(form.store.state.isDirty);
           }}
         >
           <FieldGroup>

@@ -22,19 +22,35 @@ model Account {
 }
 
 model Product {
-  id         Int       @id @default(autoincrement())
-  title      String
-  slug       String    @unique
-  thumbnail  String?
-  price      Decimal
-  modelUrl   String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  archivedAt DateTime?
+  id             Int       @id @default(autoincrement())
+  title          String
+  slug           String    @unique
+  description    String?
+  thumbnail      String?
+  price          Decimal
+  compareAtPrice Decimal?
+  modelUrl       String?
+  sku            String?   @unique
+  stock          Int?
+  isPublished    Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  archivedAt     DateTime?
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
 
   roomObjects RoomObject[]
 
   productParts ProductPart[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  slug String @unique
+
+  products Product[]
 }
 
 model ProductPart {

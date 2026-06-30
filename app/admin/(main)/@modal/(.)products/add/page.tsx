@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCreate from "@/app/admin/_components/products/product-create";
+import ProductCreate from "@/app/admin/_components/products/product-create-modal";
 import {
   Dialog,
   DialogContent,

@@ -1,4 +1,4 @@
-import ProductForm from "@/app/admin/_components/products/product-form";
+import ProductCreate from "@/app/admin/_components/products/product-create";
 import { Product } from "@/generated/prisma/client";
 import req from "@/lib/req";
 import { notFound } from "next/navigation";
@@ -23,5 +23,5 @@ export default async function PDP({
   if (!product) {
     notFound();
   }
-  return <ProductForm product={product} />;
+  return <ProductCreate product={product} />;
 }

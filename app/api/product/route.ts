@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       replacement: "-"
     });
 
-    await prisma.product.create({
+    const product = await prisma.product.create({
       data: {
         title,
         thumbnail,
@@ -45,7 +45,10 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    return NextResponse.json({ message: "Product created" }, { status: 201 });
+    return NextResponse.json(
+      { message: "Product created", product },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("[PRODUCT_CREATE]: ", err);
 

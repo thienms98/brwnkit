@@ -12,6 +12,6 @@ export const productServices = {
   async createProduct(
     data: Omit<Partial<Product>, "price"> & { price: number }
   ) {
-    await req.post("/product", data);
+    return await req.post<{ product: Product }>("/product", data);
   }
 };
