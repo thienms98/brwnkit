@@ -15,7 +15,6 @@ export default async function Home() {
 
   return (
     <main>
-      {/* scroll driver — height set by watcher count via CSS var or hardcoded */}
       <div
         id="scroll-driver"
         style={{
@@ -23,8 +22,7 @@ export default async function Home() {
         }}
       />
 
-      {/* sticky canvas */}
-      <div style={{ position: "fixed", inset: 0 }}>
+      <div className="fixed inset-0">
         <Room room={room} />
       </div>
     </main>
